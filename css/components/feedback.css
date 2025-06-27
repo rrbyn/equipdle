@@ -1,0 +1,28 @@
+#feedback {
+    margin-top: 10px;
+    color: #d4a07c;
+    text-shadow: 2px 2px 0px #000;
+    font-size: 18px;
+    letter-spacing: 0.5px;
+}
+
+#guesses-made {
+    margin-top: 5px;
+    text-align: left;
+    color: #d4a07c;
+    text-shadow: 2px 2px 0px #000;
+    font-size: 20px;
+    letter-spacing: 0.5px;
+}
+
+#guesses-made h2 {
+    margin: 5px;
+}
+#feedback .item-link {
+    text-decoration: none;
+    color: #d4a07c;
+}
+
+#feedback .item-link:hover {
+    text-decoration: underline;
+}

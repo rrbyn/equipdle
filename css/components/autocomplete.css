@@ -1,0 +1,45 @@
+#autocomplete-dropdown {
+    border: 2px solid #1a1a1a;
+    border-top: 2px solid #8b7a62;
+    border-left: 2px solid #8b7a62;
+    border-right: 2px solid #1a1a1a;
+    border-bottom: 2px solid #1a1a1a;
+    max-height: 200px;
+    overflow-y: auto;
+    background-color: #523a2e;
+    position: absolute;
+    z-index: 1000;
+    width: 200px;
+    box-shadow: none;
+    left: 0;
+    transform: none;
+    color: #e0e0e0;
+}
+
+.autocomplete-item {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    cursor: pointer;
+    border-bottom: 1px solid #422e24;
+    font-size: 16px;
+    font-family: 'RuneScape', sans-serif;
+    letter-spacing: 0.5px;
+}
+
+.autocomplete-item:last-child {
+    border-bottom: none;
+}
+
+.autocomplete-item:hover {
+    background-color: #6e4e3e;
+}
+
+.autocomplete-item-image {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+    object-fit: contain;
+    border: 1px solid #1a1a1a;
+    background-color: #422e24;
+}

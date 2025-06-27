@@ -1,0 +1,11 @@
+.guess-value.options-correct {
+    color: #00ff00; /* Green */
+}
+
+.guess-value.options-partial {
+    color: #ffff00; /* Yellow */
+}
+
+.guess-value.options-incorrect {
+    color: #ff0000; /* Red */
+}

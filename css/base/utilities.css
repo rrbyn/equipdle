@@ -1,0 +1,48 @@
+.correct {
+    color: #32cd32;
+    text-shadow: 1px 1px 0px #000;
+}
+
+.incorrect {
+    color: #dc143c;
+    text-shadow: 1px 1px 0px #000;
+}
+
+.partial {
+    color: #ffa500;
+    text-shadow: 1px 1px 0px #000;
+}
+
+.close-match {
+    color: #ffff00;
+    text-shadow: 1px 1px 0px #000;
+}
+
+.partial-high {
+    color: #ffa500;
+    text-shadow: 1px 1px 0px #000;
+}
+
+.partial-low {
+    color: #ffa500;
+    text-shadow: 1px 1px 0px #000;
+}
+
+.close-match.partial-high {
+    color: #ffff00;
+}
+
+.close-match.partial-low {
+    color: #ffff00;
+}
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}

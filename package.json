@@ -1,0 +1,19 @@
+{
+  "name": "equipdle",
+  "version": "1.0.0",
+  "description": "A game of equipment guessing.",
+  "scripts": {
+    "clean": "rm -rf dist/index.html dist/js dist/css/style.min.css",
+    "build:html": "npx html-minifier index.html --collapse-whitespace --remove-comments -o dist/index.html",
+    "postbuild:html": "sed -i -e 's#<link rel=\"stylesheet\"[^>]*>#STYLESHEET_PLACEHOLDER#' -e 's#<link rel=\"stylesheet\"[^>]*>##g' -e 's#STYLESHEET_PLACEHOLDER#<link rel=\"stylesheet\" href=\"css/style.min.css\">#' dist/index.html && sed -i 's#<script.*src=\"src/[^\"]*\".*></script>#<script src=\"js/bundle.min.js\" defer></script>#' dist/index.html",
+    "build:css": "cat css/**/*.css | npx csso-cli --output dist/css/style.min.css",
+    "build:js": "npx esbuild src/main.js --bundle --minify --outfile=dist/js/bundle.min.js",
+    "build": "npm run clean && mkdir -p dist/css dist/js && npm run build:css && npm run build:js && npm run build:html && npm run postbuild:html"
+  },
+  "devDependencies": {
+    "csso-cli": "^4.0.2",
+    "esbuild": "^0.25.5",
+    "html-minifier": "^4.0.0",
+    "terser": "^5.14.2"
+  }
+}

@@ -1,0 +1,21 @@
+#examine-text {
+    margin-top: 15px;
+    padding: 10px;
+    background-color: #422e24;
+    border: 2px solid #1a1a1a;
+    border-top: 2px solid #8b7a62;
+    border-left: 2px solid #8b7a62;
+    border-right: 2px solid #1a1a1a;
+    border-bottom: 2px solid #1a1a1a;
+    text-align: left;
+    color: #e0e0e0;
+    font-size: 16px;
+    line-height: 1.5;
+    letter-spacing: 0.5px;
+}
+
+.blurred-text {
+    filter: blur(4px);
+    transition: filter 0.3s ease;
+}
+

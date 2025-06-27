@@ -1,0 +1,43 @@
+#health-bar-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.625rem;
+    width: 100%;
+    flex-grow: 1;
+}
+
+#health-bar-label {
+    font-family: 'RuneScape Bold', sans-serif;
+    color: #e0e0e0;
+    text-shadow: 0.125rem 0.125rem 0 #000;
+    font-size: 1.125rem;
+}
+
+#health-bar-outer {
+    flex: 1;
+    max-width: 12.5rem;
+    height: 1.25rem;
+    background-color: #1a1a1a;
+    border: 0.125rem solid #1a1a1a;
+    border-top-color: #8b7a62;
+    border-left-color: #8b7a62;
+    position: relative;
+    box-sizing: border-box;
+}
+
+#health-bar-inner {
+    height: 100%;
+    background-color: #00ff00;
+    width: 100%;
+    transition: width 0.3s ease-in-out;
+    border: 0.0625rem solid #000;
+    box-sizing: border-box;
+}
+
+#health-value {
+    font-family: 'RuneScape Bold', sans-serif;
+    color: #e0e0e0;
+    text-shadow: 0.125rem 0.125rem 0 #000;
+    font-size: 1.125rem;
+}
