@@ -1,4 +1,4 @@
-const API_BASE_URL = `${window.location.protocol}//${window.location.hostname}:24829/api`;
+const API_BASE_URL = `${window.location.protocol}//${window.location.hostname}/api`;
 
 export async function startGame(type) {
     const response = await fetch(`${API_BASE_URL}/game/start`, {
@@ -15,7 +15,7 @@ export async function startGame(type) {
 }
 
 export async function getAllItems() {
-    const response = await fetch(`${API_BASE_URL}/items`);
+    const response = await fetch(`items.json`); 
     if (!response.ok) {
         throw new Error('Failed to get all items');
     }

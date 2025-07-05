@@ -10,6 +10,11 @@ export let gameId;
 export let possibleRanges = {};
 export let gameStartTime;
 export let examineText = null;
+export let itemSearchIndex = null;
+
+export function setItemSearchIndex(index) {
+    itemSearchIndex = index;
+}
 
 export function setDailyGameCompleted(value) {
     dailyGameCompleted = value;

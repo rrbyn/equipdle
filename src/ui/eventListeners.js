@@ -4,7 +4,7 @@ import {
     comparisonModalButton
 } from './domElements.js';
 import { guesses, currentHealth, dailyGameCompleted, itemTitleMap, setCurrentHealth, setDailyGameCompleted, gameType, gameId, gameStartTime, setPossibleRanges } from '../game/state.js';
-import { displayGuess } from './guessDisplay.js';
+import { createGuessHTML, displayGuess } from './guessDisplay.js';
 import { updateHealthDisplay } from './healthDisplay.js';
 import { GameType } from '../game/constants.js';
 import { displayExamineText } from './examineText.js';
@@ -73,11 +73,21 @@ export function setupEventListeners() {
             feedbackDiv.textContent = 'Item not found. Please try again.';
             return;
         }
+
         itemGuessInput.value = '';
+        submitGuessButton.disabled = true;
+        itemGuessInput.disabled = true;
+        const pendingGuessElement = displayGuess(guessedItem, null, true); // Display pending state
+
         try {
+
             const { feedback, health, fullGuessItem, currentItem } = await submitGuess(gameId, guessedItem.id);
+
             guesses.push({ guess: fullGuessItem, feedback: feedback });
-            displayGuess(fullGuessItem, feedback);
+            
+            pendingGuessElement.innerHTML = createGuessHTML(fullGuessItem, feedback);
+            pendingGuessElement.classList.remove('pending-guess');
+
             setCurrentHealth(health);
             updateHealthDisplay();
             const newRanges = calculateNewRanges(feedback, possibleRanges);
@@ -92,8 +102,6 @@ export function setupEventListeners() {
                 const won = feedback.item.status === 'correct';
                 feedbackDiv.innerHTML = '';
 
-                submitGuessButton.disabled = true;
-                itemGuessInput.disabled = true;
                 setDailyGameCompleted(true);
                 dailyGameStatusDiv.textContent = 'Daily game ended.';
                 displayExamineText(true);
@@ -130,8 +138,11 @@ export function setupEventListeners() {
                     gameId
                 });
 
-
             } else {
+                submitGuessButton.disabled = false;
+                itemGuessInput.disabled = false;
+                itemGuessInput.focus();
+
                 playDamageSound();
                 feedbackDiv.textContent = 'Keep guessing!';
                 displayExamineText(false);
@@ -143,6 +154,14 @@ export function setupEventListeners() {
         } catch (error) {
             console.error('Error submitting guess:', error);
             feedbackDiv.textContent = 'Error submitting guess. Please try again later.';
+            
+            if (pendingGuessElement && pendingGuessElement.parentNode) {
+                pendingGuessElement.parentNode.removeChild(pendingGuessElement);
+            }
+            
+            submitGuessButton.disabled = false;
+            itemGuessInput.disabled = false;
+            itemGuessInput.focus();
         }
     });
     async function newGameWrapper() {

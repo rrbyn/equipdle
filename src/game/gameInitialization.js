@@ -20,7 +20,7 @@ async function startGameLogic(type) {
     examineTextDiv.innerHTML = ''; 
     setCurrentHealth(INITIAL_HEALTH); 
     updateHealthDisplay(); 
-    submitGuessButton.disabled = false; 
+    submitGuessButton.disabled = false;
     itemGuessInput.disabled = false; 
     dailyGameStatusDiv.textContent = ''; 
     resetPossibleRanges(); 

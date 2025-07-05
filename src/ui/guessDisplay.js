@@ -1,6 +1,68 @@
 import { guessList } from './domElements.js';
 import { getSkillIconPath, getCombatStatIconPath, getGearSlotIconPath } from '../utils/iconPaths.js';
 
+function createPendingGuessHTML(guess) {
+    const attackBonusStats = ['stab', 'slash', 'crush', 'magic', 'range'];
+    const defenceBonusStats = ['stab', 'slash', 'crush', 'magic', 'range'];
+    const otherBonusStats = ['melee_strength', 'ranged_strength', 'magic_damage'];
+
+    const generateStatSkeletons = (stats, category) => {
+        return stats.map(stat => `
+            <div class="combat-stat-item">
+                <img src="${getCombatStatIconPath(category, stat)}" alt="${stat} icon" class="combat-stat-icon">
+                <span class="skeleton" style="width: 25px; height: 1em;"></span>
+            </div>
+        `).join('');
+    };
+
+    return `
+        <div class="guess-content-wrapper pending">
+            <div class="spinner-container">
+                <div class="spinner"></div>
+                <span>Checking...</span>
+            </div>
+            <div class="skeleton-content">
+                <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                    <img src="${guess.image_local_path}" alt="${guess.title}" style="width: 50px; height: 50px; margin-right: 10px; object-fit: contain;">
+                    <div><span class="guess-category">Guess:</span> <span class="guess-value item-link">${guess.title}</span></div>
+                </div>
+                <div class="guess-info-row"><span class="guess-category">Level Req:</span> <span class="skeleton" style="width: 80px; height: 1em;"></span></div>
+                <div class="guess-info-row"><span class="guess-category">High Alch:</span> <span class="skeleton" style="width: 50px; height: 1em;"></span></div>
+                <div class="guess-info-row"><span class="guess-category">Release Date:</span> <span class="skeleton" style="width: 100px; height: 1em;"></span></div>
+                <div class="guess-info-row"><span class="guess-category">Options:</span> <span class="skeleton" style="width: 150px; height: 1em;"></span></div>
+                <div class="combat-stats-wrapper">
+                    <div class="combat-stats-category">
+                        <div class="combat-stats-category-title">
+                            <img src="${getCombatStatIconPath('attack', 'bonuses')}" alt="Attack icon" class="combat-category-icon">
+                            <span>Attack Bonuses</span>
+                        </div>
+                        <div class="combat-stats-grid">${generateStatSkeletons(attackBonusStats, 'attack')}</div>
+                    </div>
+                    <div class="combat-stats-category">
+                        <div class="combat-stats-category-title">
+                            <img src="${getCombatStatIconPath('defence', 'bonuses')}" alt="Defence icon" class="combat-category-icon">
+                            <span>Defence Bonuses</span>
+                        </div>
+                        <div class="combat-stats-grid">${generateStatSkeletons(defenceBonusStats, 'defence')}</div>
+                    </div>
+                    <div class="bottom-stats-row">
+                        <div class="combat-stats-category">
+                            <div class="combat-stats-category-title">
+                                <img src="${getCombatStatIconPath('other', 'bonuses')}" alt="Other icon" class="combat-category-icon">
+                                <span>Other Bonuses</span>
+                            </div>
+                            <div class="combat-stats-grid">${generateStatSkeletons(otherBonusStats, 'other')}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="gear-slot-container top-right-slot pending">
+             <img src="${getGearSlotIconPath('Unknown')}" alt="Unknown slot icon" class="gear-slot-icon">
+        </div>
+    `;
+}
+
 export function createGuessHTML(guess, feedback) {
     let attackStatsHtml = '';
     let defenceStatsHtml = '';
@@ -97,7 +159,7 @@ export function createGuessHTML(guess, feedback) {
                                 <div class="level-requirements-category-title">Level Requirements</div>
                                 <div class="level-requirements-grid">
                     `;
-                    
+
                     for (const skill in feedback.levelRequirement.details) {
                         const skillValue = feedback.levelRequirement.details[skill].value;
                         const skillStatus = feedback.levelRequirement.details[skill].status;
@@ -146,9 +208,19 @@ export function createGuessHTML(guess, feedback) {
     `;
 }
 
-export function displayGuess(guess, feedback) {
+export function displayGuess(guess, feedback, isPending = false) {
     const listItem = document.createElement('li');
     listItem.style.position = 'relative';
-    listItem.innerHTML = createGuessHTML(guess, feedback)
+    listItem.dataset.itemId = guess.id;
+
+    if (isPending) {
+        listItem.innerHTML = createPendingGuessHTML(guess);
+        listItem.classList.add('pending-guess');
+    } else {
+        listItem.innerHTML = createGuessHTML(guess, feedback);
+        listItem.classList.remove('pending-guess');
+    }
+    
     guessList.prepend(listItem);
+    return listItem;
 }

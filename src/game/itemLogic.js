@@ -1,4 +1,4 @@
-import { allItems, allItemsNameAndImage, itemTitleMap, gameType, setGameType, possibleRanges } from './state.js';
+import { allItems, allItemsNameAndImage, itemTitleMap, gameType, setGameType, possibleRanges, setItemSearchIndex } from './state.js';
 import { initializeGame } from './gameInitialization.js';
 import { startDailyTimer } from './timer.js';
 import { loadGameFromLocalStorage } from '../utils/localStorage.js';
@@ -6,18 +6,22 @@ import { GameType } from './constants.js';
 import { displayExamineText } from '../ui/examineText.js';
 import { updateHealthDisplay } from '../ui/healthDisplay.js';
 import { getAllItems } from '../api.js';
+import { createSearchIndex } from '../utils/searchIndex.js';
 
 export async function loadItems() {
     try {
         const items = await getAllItems();
-        allItems.splice(0, allItems.length, ...items); 
+        allItems.splice(0, allItems.length, ...items); // Update the shared array
         allItemsNameAndImage.splice(0, allItemsNameAndImage.length, ...items.map(item => ({
             id: item.id,
             title: item.title,
             name: item.title,
             image_local_path: item.image_local_path
         })));
-        
+
+        const searchIndex = createSearchIndex(allItemsNameAndImage);
+        setItemSearchIndex(searchIndex);
+
         allItems.forEach(item => {
             itemTitleMap.set(item.title.toLowerCase(), item);
         });
@@ -145,7 +149,7 @@ export function calculateNewRanges(feedback, currentRanges = {}) {
         return currentRanges;
     }
     const newRanges = deepClone(currentRanges);
-    
+
     const getOrCreate = (obj, path) => {
         let current = obj;
         for (const key of path) {
@@ -156,18 +160,18 @@ export function calculateNewRanges(feedback, currentRanges = {}) {
         }
         return current;
     };
-    
+
     ['highAlch', 'releaseDate'].forEach(key => {
         if (feedback[key]) {
             const value = key === 'releaseDate' ? new Date(feedback[key].value).getTime() : feedback[key].value;
             newRanges[key] = updateNumericRange(newRanges[key], {...feedback[key], value});
         }
     });
-    
+
     if (feedback.gearSlot) {
         newRanges.gearSlot = updateCategoricalRange(newRanges.gearSlot, feedback.gearSlot);
     }
-    
+
     if (feedback.combatStats && feedback.combatStats.details) {
         const combatStatsRanges = getOrCreate(newRanges, ['combatStats']);
         const mapping = {
@@ -187,7 +191,7 @@ export function calculateNewRanges(feedback, currentRanges = {}) {
             }
         }
     }
-    
+
     if (feedback.levelRequirement) {
         newRanges.levelRequirement = updateLevelRequirements(newRanges.levelRequirement, feedback.levelRequirement);
     }
